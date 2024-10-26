@@ -14,7 +14,6 @@ from config.tools.page_scrap import *
 from config.tools.interacting_element import *
 
 
-
 initialize_logs()
 
 def get_completion(prompt):
@@ -41,11 +40,13 @@ def get_completion(prompt):
     2) If any error occurs, close the driver.
     3) If you fail to execute any step of the prompt, tell the user which task gave an issue in the output.
     4) ALWAYS fetch and analyze the HTML after EACH action to keep track of the current page state.
+    5) If you are asked to select an element from a drop down, then ensure the element is selected by fetching the page HTML.
+    6) Sometimes the button & text can be in different divs, so create a custom xpath like preceding or following to find the correct element.
     """
     try:
         log_message(f"Received prompt")
         
-        turbo_llm = ChatOpenAI(model_name=model, temperature=0.2)
+        turbo_llm = ChatOpenAI(model_name=model, temperature=0.3)
 
         agent = initialize_agent(
             tools=tools,
@@ -55,7 +56,7 @@ def get_completion(prompt):
             max_iterations=20,
             early_stopping_method="generate",
             memory=memory,
-            # handle_parsing_errors="Retry once if failed"
+            # handle_parsing_errors="True"
         )
 
         response = agent.run(input=f"{system_prompt}\n\nTask: {prompt}")
