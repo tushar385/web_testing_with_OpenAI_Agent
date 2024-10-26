@@ -12,12 +12,7 @@ from config.tools.browser_control_methods import *
 from config.tools.website_url import redirect_to_website
 from config.tools.page_scrap import *
 from config.tools.interacting_element import *
-##ai
-##ai2
-##ai3
-##ai4
-##k
-# ai5
+
 
 
 initialize_logs()
