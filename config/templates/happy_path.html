@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Testing Module</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        textarea { width: 100%; max-width: 500px; }
+        #response { margin-top: 20px; white-space: pre-wrap; }
+        button { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Auto Testing Module</h1>
+    
+    <form id="promptForm">
+        <label for="url">Enter website URL:</label><br>
+        <input type="text" id="url" name="url" required><br><br>
+        <label for="prompt">Enter your prompt:</label><br>
+        <textarea id="prompt" name="prompt" rows="4"></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <button id="rerunButton" style="display: none;">Rerun</button>
+
+    <div id="response"></div>
+
+    <script>
+        function submitPrompt() {
+            const url = document.getElementById('url').value;
+            const prompt = document.getElementById('prompt').value;
+            
+            fetch('/happy_path', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: url, prompt: prompt })
+            })
+            .then(response => response.json())
+            .then(updateResponse)
+            .catch(error => {
+                document.getElementById('response').textContent = 'Error: ' + error;
+            });
+        }
+
+        function updateResponse(data) {
+            document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            document.getElementById('rerunButton').style.display = 'inline';
+        }
+
+        document.getElementById('promptForm').onsubmit = function(event) {
+            event.preventDefault();
+            submitPrompt();
+        };
+
+        document.getElementById('rerunButton').onclick = submitPrompt;
+    </script>
+    
+</body>
+</html>
