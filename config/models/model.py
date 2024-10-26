@@ -14,8 +14,7 @@ from config.tools.page_scrap import *
 from config.tools.interacting_element import *
 ##ai
 ##ai2
-##ai3
-##ai4
+
 
 initialize_logs()
 
